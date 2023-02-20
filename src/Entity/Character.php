@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CharacterRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CharacterRepository::class)]
@@ -33,6 +34,12 @@ class Character
 
     #[ORM\Column(length: 128, nullable: true)]
     private ?string $image = null;
+
+    #[ORM\Column(length: 16)]
+    private ?string $kind = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $created = null;
 
     public function getId(): ?int
     {
@@ -126,5 +133,29 @@ class Character
     public function toArray()
     {
         return get_object_vars($this);
+    }
+
+    public function getKind(): ?string
+    {
+        return $this->kind;
+    }
+
+    public function setKind(string $kind): self
+    {
+        $this->kind = $kind;
+
+        return $this;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTimeInterface $created): self
+    {
+        $this->created = $created;
+
+        return $this;
     }
 }
