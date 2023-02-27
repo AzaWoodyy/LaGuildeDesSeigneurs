@@ -14,4 +14,13 @@ docker compose up
 composer install
 ```
 
+### Connect to the database
+
+```bash
+`user: app`
+`password: in .env`
+`db: app`
+`port: check the container port`
+```
+
 ### Go to your localhost
