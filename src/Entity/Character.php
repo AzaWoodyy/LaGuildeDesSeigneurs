@@ -12,34 +12,34 @@ class Character
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = 1;
+    private ?int $id;
 
     #[ORM\Column(length: 16)]
-    private ?string $name = 'Gorthol';
+    private ?string $name;
 
     #[ORM\Column(length: 64)]
-    private ?string $surname = 'Haume de terreur';
+    private ?string $surname;
 
     #[ORM\Column(length: 16, nullable: true)]
-    private ?string $caste = 'Chevalier';
+    private ?string $caste;
 
     #[ORM\Column(length: 16, nullable: true)]
-    private ?string $knowledge = 'Diplomatie';
+    private ?string $knowledge;
 
     #[ORM\Column(nullable: true)]
-    private ?int $intelligence = 110;
+    private ?int $intelligence;
 
     #[ORM\Column(nullable: true)]
-    private ?int $life = 13;
+    private ?int $life ;
 
     #[ORM\Column(length: 128, nullable: true)]
-    private ?string $image = null;
+    private ?string $image;
 
     #[ORM\Column(length: 16)]
-    private ?string $kind = null;
+    private ?string $kind;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created = null;
+    private ?\DateTimeInterface $created;
 
     public function getId(): ?int
     {
