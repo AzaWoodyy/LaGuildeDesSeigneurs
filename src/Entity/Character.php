@@ -25,7 +25,7 @@ class Character
 
     #[ORM\Column(length: 16, nullable: true)]
     private ?string $knowledge;
-
+    
     #[ORM\Column(length: 40)]
     private ?string $identifier;
 

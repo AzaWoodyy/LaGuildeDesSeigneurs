@@ -8,10 +8,12 @@ class CharacterService implements CharacterServiceInterface
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {}
+
     public function findOneByIdentifier(string $identifier): Character
     {
         return $this->entityManager->getRepository(Character::class)->findOneBy(['identifier' => $identifier]);
     }
+
     public function create(): Character
     {
         $character = new Character();
