@@ -8,6 +8,12 @@ class CharacterService implements CharacterServiceInterface
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {}
+
+    public function findOneByIdentifier(string $identifier): Character
+    {
+        return $this->entityManager->getRepository(Character::class)->findOneBy(['identifier' => $identifier]);
+    }
+
     public function create(): Character
     {
         $character = new Character();
@@ -19,6 +25,7 @@ class CharacterService implements CharacterServiceInterface
             ->setKnowledge('Sciences')
             ->setIntelligence(130)
             ->setLife(11)
+            ->setIdentifier(hash('sha1', uniqid()))
             ->setImage('img/characters/Anardil.jpg')
             ->setCreated(new \DateTime())
         ;

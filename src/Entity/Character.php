@@ -25,6 +25,9 @@ class Character
 
     #[ORM\Column(length: 16, nullable: true)]
     private ?string $knowledge;
+    
+    #[ORM\Column(length: 40)]
+    private ?string $identifier;
 
     #[ORM\Column(nullable: true)]
     private ?int $intelligence;
@@ -102,6 +105,18 @@ class Character
     public function setIntelligence(?int $intelligence): self
     {
         $this->intelligence = $intelligence;
+
+        return $this;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(string $identifier): self
+    {
+        $this->identifier = $identifier;
 
         return $this;
     }
