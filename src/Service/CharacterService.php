@@ -27,6 +27,7 @@ class CharacterService implements CharacterServiceInterface
             ->setLife(11)
             ->setIdentifier(hash('sha1', uniqid()))
             ->setImage('img/characters/Anardil.jpg')
+            ->setModified(new \DateTime())
             ->setCreated(new \DateTime())
         ;
         $this->entityManager->persist($character);
