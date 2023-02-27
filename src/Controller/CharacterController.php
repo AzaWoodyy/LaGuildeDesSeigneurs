@@ -14,10 +14,10 @@ class CharacterController extends AbstractController
         private CharacterServiceInterface $characterService
     ) {}
 
-    #[Route('/character/display', name: 'app_character_display', methods: ['GET', 'HEAD'])]
-    public function display(): JsonResponse
+    #[Route('/character/display/{identifier}', name: 'app_character_display', methods: ['GET', 'HEAD'])]
+    public function display($identifier): JsonResponse
     {
-        $character = new Character();
+        $character = $this->characterService->findOneByIdentifier($identifier);
         return new JsonResponse($character->toArray());
     }
 
