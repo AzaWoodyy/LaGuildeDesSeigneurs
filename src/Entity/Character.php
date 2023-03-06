@@ -86,6 +86,9 @@ class Character
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $modified = null;
 
+    #[ORM\ManyToOne(inversedBy: 'characters')]
+    private ?Player $player = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -224,6 +227,18 @@ class Character
     public function setModified(\DateTimeInterface $modified): self
     {
         $this->modified = $modified;
+
+        return $this;
+    }
+
+    public function getPlayer(): ?Player
+    {
+        return $this->player;
+    }
+
+    public function setPlayer(?Player $player): self
+    {
+        $this->player = $player;
 
         return $this;
     }

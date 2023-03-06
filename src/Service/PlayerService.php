@@ -9,18 +9,38 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use App\Repository\PlayerRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+
 class PlayerService implements PlayerServiceInterface
 {
     public function __construct(
         private FormFactoryInterface $formFactory,
         private ValidatorInterface $validator,
         private EntityManagerInterface $entityManager,
-        private CharacterRepository $characterRepository
+        private PlayerRepository $playerRepository
     ) {}
 
     public function findAll(): array
     {
         return $this->entityManager->getRepository(Player::class)->findAll();
+    }
+
+    public function serializeJson($object)
+    {
+        $encoders = new JsonEncoder();
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getIdentifier(); // Ce qu'il doit retourner
+            },
+        ];
+        $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+        $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);
+        return $serializer->serialize($object, 'json');
     }
 
     public function delete(string $identifier): void

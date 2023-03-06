@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\CharacterServiceInterface;
 use App\Entity\Character;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
 
 class CharacterController extends AbstractController
 {
@@ -16,10 +18,11 @@ class CharacterController extends AbstractController
     ) {}
 
     #[Route('/character/display/{identifier}', name: 'app_character_display', methods: ['GET', 'HEAD'])]
+    #[Entity('character', expr: 'repository.findOneByIdentifier(identifier)')]
     public function display($identifier): JsonResponse
     {
         $character = $this->characterService->findOneByIdentifier($identifier);
-        return new JsonResponse($character->toArray());
+        return JsonResponse::fromJsonString($this->characterService->serializeJson($character));
     }
 
     #[Route('/character/create', name: 'app_character_create', methods: ['POST','HEAD'])]

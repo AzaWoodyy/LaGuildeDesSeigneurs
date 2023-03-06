@@ -10,6 +10,11 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use App\Repository\CharacterRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class CharacterService implements CharacterServiceInterface
 {
@@ -19,6 +24,19 @@ class CharacterService implements CharacterServiceInterface
         private ValidatorInterface $validator,
         private CharacterRepository $characterRepository
     ) {}
+
+    public function serializeJson($object)
+    {
+        $encoders = new JsonEncoder();
+        $defaultContext = [
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getIdentifier(); // Ce qu'il doit retourner
+            },
+        ];
+        $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
+        $serializer = new Serializer([new DateTimeNormalizer(), $normalizers], [$encoders]);
+        return $serializer->serialize($object, 'json');
+    }
 
     public function findOneByIdentifier(string $identifier): Character
     {
