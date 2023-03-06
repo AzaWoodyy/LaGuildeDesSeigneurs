@@ -9,12 +9,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use App\Repository\CharacterRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CharacterService implements CharacterServiceInterface
 {
     public function __construct(
         private FormFactoryInterface $formFactory,
         private EntityManagerInterface $entityManager,
+        private ValidatorInterface $validator,
         private CharacterRepository $characterRepository
     ) {}
 
@@ -56,14 +58,12 @@ class CharacterService implements CharacterServiceInterface
 
     public function isEntityFilled(Character $character)
     {
-        if (null === $character->getKind() ||
-            null === $character->getName() ||
-            null === $character->getSurname() ||
-            null === $character->getIdentifier() ||
-            null === $character->getCreated() ||
-            null === $character->getModified()) {
-                $errorMsg = 'Missing data for Entity -> ' . json_encode($character->toArray());
-                throw new UnprocessableEntityHttpException($errorMsg);
+        $character->setIdentifier('badidentifier');
+        $errors = $this->validator->validate($character);
+        if (count($errors) > 0) {
+           $errorMsg  = (string) $errors . 'Wrong data for Entity -> ';
+           $errorMsg .= json_encode($character->toArray());
+            throw new UnprocessableEntityHttpException($errorMsg);
         }
     }
 

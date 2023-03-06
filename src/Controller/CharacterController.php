@@ -32,7 +32,6 @@ class CharacterController extends AbstractController
     #[Route('/character/update', name: 'app_character_update', methods: ['PUT','HEAD'])]
     public function modify(Request $request, Character $character): JsonResponse
     {
-        $this->denyAccessUnlessGranted('characterModify', $character);
         $character = $this->characterService->modify($character, $request->getContent());
         return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }

@@ -11,22 +11,43 @@ class Player
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $id;
+
+    #[ORM\Column(length: 64)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 64,
+    )]
+    private ?string $firstname;
+
+    #[ORM\Column(length: 64)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 64,
+    )]
+    private ?string $lastname;
 
     #[ORM\Column(length: 255)]
-    private ?string $firstname = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $lastname = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $email = null;
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    private ?string $email;
 
     #[ORM\Column]
-    private ?int $mirian = null;
+    #[Assert\PositiveOrZero]
+    private ?int $mirian;
 
-    #[ORM\Column(length: 255)]
-    private ?string $identifier = null;
+    #[ORM\Column(length: 40)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 40,
+        max: 40,
+    )]
+    private ?string $identifier;
 
     public function getId(): ?int
     {
@@ -91,5 +112,10 @@ class Player
         $this->identifier = $identifier;
 
         return $this;
+    }
+
+    public function toArray()
+    {
+        return get_object_vars($this);
     }
 }
