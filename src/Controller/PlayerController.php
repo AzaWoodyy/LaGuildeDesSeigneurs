@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\PlayerServiceInterface;
 use App\Entity\Player;
+use Symfony\Component\HttpFoundation\Request;
 
 class PlayerController extends AbstractController
 {
@@ -29,10 +30,17 @@ class PlayerController extends AbstractController
     }
 
     #[Route('/player/create', name: 'app_player_create', methods: ['POST','HEAD'])]
-    public function create(): JsonResponse
+    public function create(Request $request): JsonResponse
     {
-        $player = $this->playerService->create();
+        $player = $this->playerService->create($request->getContent());
         return new JsonResponse($player->toArray(), JsonResponse::HTTP_CREATED);
+    }
+
+    #[Route('/player/update', name: 'app_player_update', methods: ['PUT','HEAD'])]
+    public function modify(Request $request, Player $player): JsonResponse
+    {
+        $player = $this->playerService->modify($player, $request->getContent());
+        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }
 
     #[Route('/player/delete', name: 'app_player_create', methods: ['POST','HEAD'])]

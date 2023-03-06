@@ -6,6 +6,12 @@ interface PlayerServiceInterface
     # Creates the player
     public function create();
 
+    public function isEntityFilled(Player $player);
+
+    public function submit(Player $player, $formName, $data);
+
+    public function modify(Player $player, string $data);
+
     # Deletes the player
     public function delete(string $identifier);
 
