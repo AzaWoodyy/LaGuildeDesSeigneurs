@@ -8,6 +8,8 @@ interface PlayerServiceInterface
 
     public function isEntityFilled(Player $player);
 
+    public function serializeJson($object);
+    
     public function submit(Player $player, $formName, $data);
 
     public function modify(Player $player, string $data);

@@ -8,6 +8,8 @@ interface CharacterServiceInterface
 
     public function isEntityFilled(Character $character);
 
+    public function serializeJson($object);
+
     public function submit(Character $character, $formName, $data);
 
     public function modify(Character $character, string $data);

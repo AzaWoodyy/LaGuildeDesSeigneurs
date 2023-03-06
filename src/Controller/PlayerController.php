@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\PlayerServiceInterface;
 use App\Entity\Player;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 class PlayerController extends AbstractController
 {
@@ -23,10 +24,11 @@ class PlayerController extends AbstractController
     }
 
     #[Route('/player/display/{identifier}', name: 'app_player_display', methods: ['GET', 'HEAD'])]
+    #[Entity('player', expr: 'repository.findOneByIdentifier(identifier)')]
     public function display($identifier): JsonResponse
     {
         $player = $this->playerService->findOneByIdentifier($identifier);
-        return new JsonResponse($player->toArray());
+        return JsonResponse::fromJsonString($this->playerService->serializeJson($player));
     }
 
     #[Route('/player/create', name: 'app_player_create', methods: ['POST','HEAD'])]
