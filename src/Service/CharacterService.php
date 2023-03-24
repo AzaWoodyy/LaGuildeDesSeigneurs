@@ -30,7 +30,7 @@ class CharacterService implements CharacterServiceInterface
         $encoders = new JsonEncoder();
         $defaultContext = [
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getIdentifier(); // Ce qu'il doit retourner
+                return $object->getIdentifier();
             },
         ];
         $normalizers = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
